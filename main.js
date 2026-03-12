@@ -1,4 +1,3 @@
-
 class Router {
     constructor(routes) {
         this.routes = routes;
@@ -28,6 +27,7 @@ class Router {
         this.appContainer.innerHTML = '';
         const pageElement = document.createElement(page);
         pageElement.params = this.params;
+        pageElement.classList.add('fade-in');
         this.appContainer.appendChild(pageElement);
     }
 }
@@ -37,14 +37,18 @@ class LandingPage extends HTMLElement {
         this.innerHTML = `
             <div class="container text-center">
                 <div class="header">
-                    <h1>AI 피부 진단 & 맞춤 시술 · 병원 매칭</h1>
-                    <p>Upload your selfie, get AI skin diagnosis, recommended treatments, and matching clinics.</p>
+                    <div class="badge" style="display: inline-block; margin-bottom: 1rem;">Premium AI Skin Diagnosis</div>
+                    <h1>LUTI</h1>
+                    <p style="font-size: 1.1rem; color: var(--text);">당신의 피부를 위한 최고의 선택.<br>AI 정밀 진단부터 맞춤 시술 매칭까지.</p>
                 </div>
-                <button id="start-diagnosis">지금 피부 진단 시작하기</button>
-                <p><a href="#">서비스 소개</a></p>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&q=80&w=400" alt="Skincare" style="width: 100%; border-radius: var(--radius-sm); margin-bottom: 1rem;">
+                    <button id="start-diagnosis">지금 피부 진단 시작하기</button>
+                </div>
+                <p><a href="#">LUTI 서비스 소개</a></p>
             </div>
         `;
-        document.getElementById('start-diagnosis').addEventListener('click', () => {
+        this.querySelector('#start-diagnosis').addEventListener('click', () => {
             window.location.hash = '#/upload';
         });
     }
@@ -60,38 +64,40 @@ class PhotoUploadPage extends HTMLElement {
                     <div class="step">2</div>
                     <div class="step">3</div>
                 </div>
-                <h2>Upload Photo</h2>
-                <div class="form-group">
-                    <label for="image-url">Image URL</label>
-                    <input type="text" id="image-url" placeholder="Enter image URL">
+                <h2>피부 분석 정보 입력</h2>
+                <div class="card">
+                    <div class="form-group">
+                        <label for="image-url">분석할 사진 (URL)</label>
+                        <input type="text" id="image-url" placeholder="이미지 주소를 입력하세요">
+                    </div>
+                    <div class="form-group mt-4">
+                        <label for="gender">성별</label>
+                        <select id="gender">
+                            <option value="F">여성</option>
+                            <option value="M">남성</option>
+                            <option value="OTHER">기타</option>
+                        </select>
+                    </div>
+                    <div class="form-group mt-4">
+                        <label for="birth-year">출생 연도</label>
+                        <input type="number" id="birth-year" placeholder="YYYY" value="1995">
+                    </div>
+                    <button id="analyze-skin" class="mt-4">AI 정밀 분석 시작</button>
                 </div>
-                <div class="form-group">
-                    <label for="gender">Gender</label>
-                    <select id="gender">
-                        <option value="F">Female</option>
-                        <option value="M">Male</option>
-                        <option value="OTHER">Other</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="birth-year">Birth Year</label>
-                    <input type="number" id="birth-year" placeholder="YYYY">
-                </div>
-                <button id="analyze-skin">AI로 분석하기</button>
             </div>
         `;
-        document.getElementById('analyze-skin').addEventListener('click', async () => {
-            const imageUrl = document.getElementById('image-url').value;
+        this.querySelector('#analyze-skin').addEventListener('click', async () => {
+            const imageUrl = this.querySelector('#image-url').value;
             if (!imageUrl) {
-                alert('Please enter an image URL.');
+                alert('이미지 주소를 입력해주세요.');
                 return;
             }
 
             window.location.hash = '#/analyzing';
 
-            // Mock API call
+            // Mock API call simulation
             await new Promise(resolve => setTimeout(resolve, 3000));
-            const diagnosisId = 'mock-diagnosis-id';
+            const diagnosisId = 'LUTI-' + Math.random().toString(36).substr(2, 9).toUpperCase();
             window.location.hash = `#/result/${diagnosisId}`;
         });
     }
@@ -101,10 +107,10 @@ customElements.define('photo-upload-page', PhotoUploadPage);
 class AnalyzingState extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
-            <div class="container text-center">
-                <h2>AI가 당신의 피부를 분석 중입니다…</h2>
-                <p>보통 5~10초 정도 소요됩니다.</p>
+            <div class="container text-center" style="margin-top: 4rem;">
                 <div class="spinner"></div>
+                <h2>AI 피부 정밀 분석 중…</h2>
+                <p>당신의 피부 상태를 데이터로 변환하고 있습니다.<br>잠시만 기다려주세요.</p>
             </div>
         `;
     }
@@ -116,52 +122,59 @@ class ResultSummaryPage extends HTMLElement {
         const diagnosisId = this.params.id;
         this.innerHTML = `
             <div class="container">
-                <h2>Diagnosis Result: ${diagnosisId}</h2>
-                <div class="card">
-                    <img src="https://via.placeholder.com/150" alt="User Photo">
-                    <p><strong>Skin Type:</strong> Oily</p>
-                    <p><strong>Overall Grade:</strong> B</p>
+                <div class="step-indicator">
+                    <div class="step">1</div>
+                    <div class="step active">2</div>
+                    <div class="step">3</div>
+                </div>
+                <h2>진단 결과</h2>
+                <div class="card text-center">
+                    <div class="badge" style="margin-bottom: 0.5rem;">Diagnosis ID: ${diagnosisId}</div>
+                    <div style="font-size: 3rem; font-weight: 800; color: var(--primary);">B+</div>
+                    <p>전반적인 피부 상태는 양호하나,<br>모공과 색소 침착 관리가 필요합니다.</p>
                 </div>
                 <div class="card">
-                    <h4>Skin Scores</h4>
+                    <h4>피부 분석 리포트</h4>
                     <canvas id="result-chart" class="result-chart"></canvas>
                 </div>
-                <button id="show-treatments">맞춤 시술 추천 보기</button>
-                <button id="re-upload">다시 촬영하기</button>
+                <button id="show-treatments">맞춤 시술 솔루션 보기</button>
+                <button id="re-upload" style="background: var(--secondary); color: var(--text); margin-top: 12px;">다시 측정하기</button>
             </div>
         `;
 
-        const ctx = document.getElementById('result-chart').getContext('2d');
+        const ctx = this.querySelector('#result-chart').getContext('2d');
         new Chart(ctx, {
             type: 'radar',
             data: {
-                labels: ['Pore', 'Wrinkle', 'Pigment', 'Acne', 'Redness', 'Elasticity'],
+                labels: ['모공', '주름', '색소', '트러블', '홍조', '탄력'],
                 datasets: [{
-                    label: 'Skin Score',
-                    data: [65, 59, 80, 81, 56, 55],
-                    backgroundColor: 'rgba(255, 140, 107, 0.2)',
-                    borderColor: 'rgba(255, 140, 107, 1)',
-                    borderWidth: 1
+                    label: '내 피부 점수',
+                    data: [65, 59, 40, 81, 56, 75],
+                    backgroundColor: 'oklch(70% 0.15 30 / 0.2)',
+                    borderColor: 'oklch(70% 0.15 30)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'oklch(70% 0.15 30)',
                 }]
             },
             options: {
                 scales: {
                     r: {
-                        angleLines: {
-                            display: false
-                        },
+                        angleLines: { display: true },
                         suggestedMin: 0,
-                        suggestedMax: 100
+                        suggestedMax: 100,
+                        ticks: { display: false }
                     }
+                },
+                plugins: {
+                    legend: { display: false }
                 }
             }
         });
 
-
-        document.getElementById('show-treatments').addEventListener('click', () => {
+        this.querySelector('#show-treatments').addEventListener('click', () => {
             window.location.hash = `#/treatments/${diagnosisId}`;
         });
-        document.getElementById('re-upload').addEventListener('click', () => {
+        this.querySelector('#re-upload').addEventListener('click', () => {
             window.location.hash = '#/upload';
         });
     }
@@ -170,37 +183,40 @@ customElements.define('result-summary-page', ResultSummaryPage);
 
 class TreatmentRecommendationPage extends HTMLElement {
     connectedCallback() {
-        const diagnosisId = this.params.id;
         this.innerHTML = `
             <div class="container">
-                <h2>Recommended Treatments for ${diagnosisId}</h2>
-                <div class="treatment-card">
-                    <h3>Pico Laser</h3>
-                    <p>Main Target: Pigment</p>
-                    <div class="badge-container">
-                        <span class="badge">Downtime: LOW</span>
-                        <span class="badge">Pain: LOW</span>
-                        <span class="badge">Price: MID</span>
-                    </div>
-                    <p>A popular laser treatment for pigmentation issues.</p>
+                <div class="step-indicator">
+                    <div class="step">1</div>
+                    <div class="step">2</div>
+                    <div class="step active">3</div>
                 </div>
-                <div class="treatment-card">
-                    <h3>Secret RF</h3>
-                    <p>Main Target: Pore</p>
-                    <div class="badge-container">
-                        <span class="badge">Downtime: MID</span>
-                        <span class="badge">Pain: MID</span>
-                        <span class="badge">Price: HIGH</span>
+                <h2>추천 솔루션</h2>
+                <div class="card treatment-card">
+                    <div>
+                        <h3>피코 토닝 (Pico Toning)</h3>
+                        <p>색소 침착 및 기미 개선에 효과적인 프리미엄 레이저</p>
                     </div>
-                    <p>Microneedling with radiofrequency for pore tightening.</p>
+                    <div class="badge-container">
+                        <span class="badge">통증 낮음</span>
+                        <span class="badge">즉시 복귀 가능</span>
+                    </div>
+                </div>
+                <div class="card treatment-card">
+                    <div>
+                        <h3>시크릿 RF</h3>
+                        <p>모공 축소 및 탄력 개선을 위한 고주파 니들링</p>
+                    </div>
+                    <div class="badge-container">
+                        <span class="badge">모공 특화</span>
+                        <span class="badge">탄력 개선</span>
+                    </div>
                 </div>
                 <button id="find-hospitals">이 시술 잘하는 병원 추천 받기</button>
             </div>
         `;
 
-        document.getElementById('find-hospitals').addEventListener('click', () => {
-            const matchId = 'mock-match-id';
-            window.location.hash = `#/hospitals/${matchId}`;
+        this.querySelector('#find-hospitals').addEventListener('click', () => {
+            window.location.hash = `#/hospitals/match-${Math.floor(Math.random()*1000)}`;
         });
     }
 }
@@ -208,41 +224,27 @@ customElements.define('treatment-recommendation-page', TreatmentRecommendationPa
 
 class HospitalMatchPage extends HTMLElement {
     connectedCallback() {
-        const matchId = this.params.id;
         this.innerHTML = `
             <div class="container">
-                <h2>Recommended Hospitals for Match ${matchId}</h2>
-                <div class="form-group">
-                    <label for="region">Region</label>
-                    <select id="region">
-                        <option>Seoul Gangnam-gu</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="price">Price Level</label>
-                    <select id="price">
-                        <option>MID</option>
-                    </select>
-                </div>
-                <div class="hospital-card">
-                    <h3>XX Dermatology</h3>
-                    <p>Type: DERMATOLOGY</p>
-                    <p>Region: Seoul Gangnam-gu</p>
-                    <p>Main Strength: Pigment</p>
+                <h2>매칭된 병원</h2>
+                <p>LUTI가 엄선한 시술 전문 병원입니다.</p>
+                <div class="card hospital-card">
+                    <h3>강남 XX 피부과</h3>
+                    <p>서울특별시 강남구 테헤란로</p>
                     <div class="badge-container">
-                        <span class="badge">Price: MID</span>
+                        <span class="badge" style="background: var(--primary); color: white;">추천</span>
+                        <span class="badge">색소 전문</span>
                     </div>
-                    <button class="book-now">예약 / 문의 남기기</button>
+                    <button class="book-now">상담 예약하기</button>
                 </div>
-                 <div class="hospital-card">
-                    <h3>YY Clinic</h3>
-                    <p>Type: PLASTIC_SURGERY</p>
-                    <p>Region: Seoul Gangnam-gu</p>
-                    <p>Main Strength: Lifting</p>
+                 <div class="card hospital-card">
+                    <h3>청담 YY 의원</h3>
+                    <p>서울특별시 강남구 도산대로</p>
                     <div class="badge-container">
-                        <span class="badge">Price: HIGH</span>
+                        <span class="badge">프리미엄</span>
+                        <span class="badge">리프팅 전문</span>
                     </div>
-                    <button class="book-now">예약 / 문의 남기기</button>
+                    <button class="book-now" style="background: var(--secondary); color: var(--text);">문의 남기기</button>
                 </div>
             </div>
         `;
@@ -254,29 +256,23 @@ class MyPage extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
             <div class="container">
-                <h2>My Page</h2>
+                <h2>마이 페이지</h2>
                 <div class="card">
-                    <h4>Profile</h4>
-                    <p><strong>Name:</strong> John Doe</p>
-                    <p><strong>Gender:</strong> Male</p>
-                    <p><strong>Birth Year:</strong> 1990</p>
+                    <h4>내 정보</h4>
+                    <p><strong>이름:</strong> 사용자님</p>
+                    <p><strong>최근 진단:</strong> 2026-03-12</p>
                 </div>
                 <div class="card">
-                    <h4>My Diagnoses</h4>
+                    <h4>진단 기록</h4>
                     <ul>
-                        <li><a href="#/result/mock-diagnosis-id">mock-diagnosis-id</a></li>
+                        <li><a href="#/result/LUTI-MOCK">LUTI-MOCK (2026-03-12)</a></li>
                     </ul>
-                </div>
-                <div class="card">
-                    <h4>My Bookings</h4>
-                    <p>No bookings yet.</p>
                 </div>
             </div>
         `;
     }
 }
 customElements.define('my-page', MyPage);
-
 
 const routes = {
     '#/': 'landing-page',

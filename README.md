@@ -1,1 +1,1 @@
-A simple HTML/JS/CSS starter template
+# LUTI - AI Skin & Clinic Match
