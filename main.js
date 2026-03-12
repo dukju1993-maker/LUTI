@@ -67,8 +67,17 @@ class PhotoUploadPage extends HTMLElement {
                 <h2>피부 분석 정보 입력</h2>
                 <div class="card">
                     <div class="form-group">
-                        <label for="image-url">분석할 사진 (URL)</label>
-                        <input type="text" id="image-url" placeholder="이미지 주소를 입력하세요">
+                        <label>분석할 사진</label>
+                        <div id="upload-zone" class="upload-zone">
+                            <i class="upload-icon">📸</i>
+                            <p>사진을 드래그하거나 클릭하여 선택하세요</p>
+                            <span class="support-text">JPG, PNG 파일 (최대 10MB)</span>
+                            <input type="file" id="file-input" accept="image/*" style="display: none;">
+                        </div>
+                        <div id="preview-container" class="preview-container">
+                            <img id="preview-image" class="preview-image" src="" alt="Preview">
+                            <p id="file-name" class="support-text mt-2"></p>
+                        </div>
                     </div>
                     <div class="form-group mt-4">
                         <label for="gender">성별</label>
@@ -82,20 +91,55 @@ class PhotoUploadPage extends HTMLElement {
                         <label for="birth-year">출생 연도</label>
                         <input type="number" id="birth-year" placeholder="YYYY" value="1995">
                     </div>
-                    <button id="analyze-skin" class="mt-4">AI 정밀 분석 시작</button>
+                    <button id="analyze-skin" class="mt-4" disabled>AI 정밀 분석 시작</button>
                 </div>
             </div>
         `;
-        this.querySelector('#analyze-skin').addEventListener('click', async () => {
-            const imageUrl = this.querySelector('#image-url').value;
-            if (!imageUrl) {
-                alert('이미지 주소를 입력해주세요.');
-                return;
+
+        const uploadZone = this.querySelector('#upload-zone');
+        const fileInput = this.querySelector('#file-input');
+        const previewContainer = this.querySelector('#preview-container');
+        const previewImage = this.querySelector('#preview-image');
+        const fileNameText = this.querySelector('#file-name');
+        const analyzeBtn = this.querySelector('#analyze-skin');
+
+        const handleFile = (file) => {
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewImage.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                    uploadZone.style.display = 'none';
+                    fileNameText.textContent = file.name;
+                    analyzeBtn.disabled = false;
+                };
+                reader.readAsDataURL(file);
             }
+        };
 
+        uploadZone.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', (e) => {
+            handleFile(e.target.files[0]);
+        });
+
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragging');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragging');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragging');
+            handleFile(e.dataTransfer.files[0]);
+        });
+
+        analyzeBtn.addEventListener('click', async () => {
             window.location.hash = '#/analyzing';
-
-            // Mock API call simulation
             await new Promise(resolve => setTimeout(resolve, 3000));
             const diagnosisId = 'LUTI-' + Math.random().toString(36).substr(2, 9).toUpperCase();
             window.location.hash = `#/result/${diagnosisId}`;

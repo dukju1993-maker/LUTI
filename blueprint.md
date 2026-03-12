@@ -48,8 +48,11 @@ The current focus is on elevating the user experience through a premium "Glossy 
     - Improve the initial landing page layout.
 3.  **Enhance `main.js`**:
     - Update Web Components with improved markup and interactive elements.
+    - **Added Drag & Drop / File Selection for Photo Upload.**
     - Add animations and transitions between pages.
     - Implement better data visualization for skin diagnosis.
-4.  **Final Polish**:
+4.  **CI/CD Setup**:
+    - **GitHub Actions established for automatic deployment to GitHub Pages on every push to `main`.**
+5.  **Final Polish**:
     - Ensure accessibility (A11Y) standards.
     - Verify responsiveness across different mobile screen sizes.
