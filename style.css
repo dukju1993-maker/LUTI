@@ -1,1 +1,162 @@
-/* Add styles here */
+
+:root {
+    --primary-color: #ff8c6b;
+    --secondary-color: #ffb4a2;
+    --background-color: #fff;
+    --text-color: #333;
+    --border-color: #eee;
+    --white: #fff;
+    --grey: #f5f5f5;
+    --dark-grey: #aaa;
+    --success-color: #4caf50;
+    --error-color: #f44336;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+#app {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+button {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #ff714f;
+}
+
+button:disabled {
+    background-color: var(--secondary-color);
+    cursor: not-allowed;
+}
+
+.container {
+    padding: 2rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.card {
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.header {
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.step-indicator {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.step {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--grey);
+    color: var(--dark-grey);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+}
+
+.step.active {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.result-chart {
+    height: 250px;
+}
+
+.treatment-card,
+.hospital-card {
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.treatment-card h3,
+.hospital-card h3 {
+    margin-bottom: 0.5rem;
+}
+
+.badge-container {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.badge {
+    background-color: var(--grey);
+    color: var(--dark-grey);
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}

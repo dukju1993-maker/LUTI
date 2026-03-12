@@ -1,14 +1,23 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Skin Match</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
+    <div id="app">
+        <div class="container text-center">
+            <div class="header">
+                <h1>AI 피부 진단 & 맞춤 시술 · 병원 매칭</h1>
+                <p>Upload your selfie, get AI skin diagnosis, recommended treatments, and matching clinics.</p>
+            </div>
+            <button id="start-diagnosis">지금 피부 진단 시작하기</button>
+            <p><a href="#">서비스 소개</a></p>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
