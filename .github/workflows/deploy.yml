@@ -1,33 +1,39 @@
-name: Deploy to GitHub Pages
+
+name: Deploy to Cloudflare Pages
 
 on:
   push:
     branches:
-      - main
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+      - main  # 또는 주 브랜치 이름
 
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      
-      - name: Setup Pages
-        uses: actions/setup-pages@v4
-      
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
         with:
-          path: '.'
-      
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          node-version: '18' # 필요에 따라 Node.js 버전 변경
+
+      - name: Install dependencies
+        run: npm install  # 만약 의존성이 있다면
+
+      - name: Build
+        run: npm run build # 만약 빌드 과정이 있다면
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: 'LUTI'
+          directory: '.' # 또는 빌드 결과물이 있는 디렉토리 (e.g., dist)
+          # Optional: target a specific branch
+          branch: 'main'
