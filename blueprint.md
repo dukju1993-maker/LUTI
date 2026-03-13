@@ -11,6 +11,7 @@
 - **Treatment Recommendation:** Rule-based engine to suggest treatments based on skin analysis results.
 - **Hospital Recommendation:** Heuristic-based system to recommend clinics based on treatment recommendations and user preferences.
 - **Booking System:** Allows users to request appointments with recommended clinics.
+- **Service Introduction (Workflow):** Clickable section on the landing page that reveals the step-by-step LUTI workflow.
 
 ### Frontend
 - **Landing Page:** Introduces the app and prompts users to start the skin analysis.

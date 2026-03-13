@@ -220,6 +220,54 @@
         aspect-ratio: 1;
     }
 
+    /* Workflow List */
+    .workflow-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 1.5rem;
+    }
+
+    .workflow-list li {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+    }
+
+    .step-num {
+        font-size: 0.875rem;
+        font-weight: 800;
+        color: var(--primary);
+        background: var(--secondary);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .workflow-list strong {
+        display: block;
+        font-size: 1rem;
+        color: var(--text);
+        margin-bottom: 4px;
+    }
+
+    .workflow-list p {
+        font-size: 0.875rem;
+        margin-bottom: 0;
+    }
+
+    .service-intro h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--text);
+    }
+
     /* Spinner */
     .spinner {
         width: 48px;

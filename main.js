@@ -45,9 +45,56 @@ class LandingPage extends HTMLElement {
                     <img src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&q=80&w=400" alt="Skincare" style="width: 100%; border-radius: var(--radius-sm); margin-bottom: 1rem;">
                     <button id="start-diagnosis">지금 피부 진단 시작하기</button>
                 </div>
-                <p><a href="#">LUTI 서비스 소개</a></p>
+                <p><a href="#" id="show-intro">LUTI 서비스 소개</a></p>
+                
+                <div id="service-intro" class="service-intro card" style="display: none; text-align: left; margin-top: 1rem;">
+                    <h3>LUTI 워크플로우</h3>
+                    <ul class="workflow-list">
+                        <li>
+                            <span class="step-num">01</span>
+                            <div>
+                                <strong>AI 피부 정밀 진단</strong>
+                                <p>셀카 한 장으로 6가지 주요 피부 고민(모공, 주름, 색소 등)을 정밀 분석합니다.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="step-num">02</span>
+                            <div>
+                                <strong>맞춤형 시술 추천</strong>
+                                <p>분석 데이터를 바탕으로 당신에게 가장 효과적인 시술 솔루션을 제안합니다.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="step-num">03</span>
+                            <div>
+                                <strong>전문 병원 매칭</strong>
+                                <p>해당 시술에 특화된 검증된 프리미엄 병원을 엄선하여 연결해 드립니다.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="step-num">04</span>
+                            <div>
+                                <strong>간편 예약 및 상담</strong>
+                                <p>앱 내에서 바로 병원에 상담을 요청하고 편리하게 예약할 수 있습니다.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         `;
+        
+        const introLink = this.querySelector('#show-intro');
+        const introSection = this.querySelector('#service-intro');
+        
+        introLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isHidden = introSection.style.display === 'none';
+            introSection.style.display = isHidden ? 'block' : 'none';
+            if (isHidden) {
+                introSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
         this.querySelector('#start-diagnosis').addEventListener('click', () => {
             window.location.hash = '#/upload';
         });
